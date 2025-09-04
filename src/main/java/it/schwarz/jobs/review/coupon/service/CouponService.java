@@ -34,11 +34,7 @@ public class CouponService {
     }
 
     public CouponApplications getApplications(String couponCode) {
-        var foundCouponApplications = couponProvider.getCouponApplications(couponCode);
-        if (foundCouponApplications.isEmpty()) {
-            throw new CouponCodeNotFoundException("Coupon-Code " + couponCode + " not found.");
-        }
-        return foundCouponApplications.get();
+        return couponProvider.getCouponApplications(couponCode).orElseThrow(() -> new CouponCodeNotFoundException("Coupon code not found: " + couponCode));
     }
 
     public ApplicationResult applyCoupon(Basket basket, String couponCode) {
