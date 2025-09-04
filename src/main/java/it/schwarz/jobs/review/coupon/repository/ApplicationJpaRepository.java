@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.Instant;
 import java.util.List;
 
-public interface ApplicationJpaRepository extends JpaRepository<ApplicationJpaEntity, String> {
+public interface ApplicationJpaRepository extends JpaRepository<ApplicationJpaEntity, Long> {
 
     @Query("select a.timestamp from ApplicationJpaEntity a where a.couponCode = :couponCode")
     List<Instant> findTimestampsByCouponCode(@Param("couponCode") String couponCode);}

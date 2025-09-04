@@ -12,7 +12,7 @@ public class ApplicationJpaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private long id;
+    private Long id;
 
     @Column(name = "COUPON_CODE", nullable = false)
     private String couponCode;
