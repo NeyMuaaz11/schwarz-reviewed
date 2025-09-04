@@ -67,8 +67,15 @@ public class InMemoryCouponProvider implements CouponProvider {
 
     @Override
     public Optional<CouponApplications> getCouponApplications(String couponCode) {
-        return couponApplications.stream()
+        Optional<CouponApplications> applications = couponApplications.stream()
                 .filter(it -> it.getCouponCode().equals(couponCode))
                 .findFirst();
+        // need to know if coupon exists and is not used yet or if coupon does not exist
+        if (applications.isEmpty()) {
+            if (this.findById(couponCode).isPresent()) {
+                return Optional.of(new CouponApplications(couponCode, Collections.emptyList()));
+            }
+        }
+        return applications;
     }
 }
