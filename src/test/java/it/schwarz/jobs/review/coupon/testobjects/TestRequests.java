@@ -23,4 +23,8 @@ public class TestRequests {
     public ApplyCouponRequestDto invalidApplicationOfNotExistingCode() {
         return new ApplyCouponRequestDto(new BasketDto(new BigDecimal("60.00")), "<NOT-EXISTING-CODE>");
     }
+
+    public ApplyCouponRequestDto invalidApplicationOfEmptyCode() {
+        return new ApplyCouponRequestDto(new BasketDto(new BigDecimal("60.00")), "");
+    }
 }

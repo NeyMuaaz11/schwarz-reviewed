@@ -1,7 +1,6 @@
-package it.schwarz.jobs.review.coupon.domain.usecase;
+package it.schwarz.jobs.review.coupon.service;
 
 import it.schwarz.jobs.review.coupon.api.exceptions.CouponAlreadyExistsException;
-import it.schwarz.jobs.review.coupon.service.CouponService;
 import it.schwarz.jobs.review.coupon.provider.inmem.InMemoryCouponProvider;
 import it.schwarz.jobs.review.coupon.testobjects.TestObjects;
 import org.junit.jupiter.api.Test;
