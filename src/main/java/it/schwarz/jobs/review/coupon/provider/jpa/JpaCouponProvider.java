@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class JpaCouponProvider implements CouponProvider {
@@ -83,7 +84,7 @@ public class JpaCouponProvider implements CouponProvider {
                 AmountOfMoney.of(couponJpaEntity.getDiscount()),
                 AmountOfMoney.of(couponJpaEntity.getMinBasketValue()),
                 couponJpaEntity.getDescription(),
-                couponJpaEntity.getApplications() == null ? 0 : couponJpaEntity.getApplications().size()
+                Objects.isNull(couponJpaEntity.getApplications()) ? 0 : couponJpaEntity.getApplications().size()
         );
     }
 
