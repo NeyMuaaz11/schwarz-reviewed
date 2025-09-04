@@ -8,9 +8,11 @@ import it.schwarz.jobs.review.coupon.api.exceptions.BasketValueTooLowException;
 import it.schwarz.jobs.review.coupon.api.exceptions.CouponAlreadyExistsException;
 import it.schwarz.jobs.review.coupon.api.exceptions.CouponCodeNotFoundException;
 import it.schwarz.jobs.review.coupon.provider.CouponProvider;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class CouponService {
 
     private final CouponProvider couponProvider;

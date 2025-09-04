@@ -25,11 +25,4 @@ public class CouponAppConfig {
         return new InMemoryCouponProvider();
     }
 
-
-    @Bean
-    public CouponService getCouponService(CouponProvider couponProvider) {
-        return new CouponService(couponProvider);
-    }
-
-
 }
