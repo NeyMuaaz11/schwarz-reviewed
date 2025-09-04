@@ -31,6 +31,7 @@ public class InMemoryCouponProvider implements CouponProvider {
         applicationDateTimes.add(Instant.now().plusSeconds(3));
         applicationDateTimes.add(Instant.now().plusSeconds(4));
         couponApplications.put("TEST_05_50", applicationDateTimes);
+        couponApplications.put("test", applicationDateTimes);
     }
 
 
@@ -65,15 +66,15 @@ public class InMemoryCouponProvider implements CouponProvider {
 
     @Override
     public Optional<CouponApplications> getCouponApplications(String couponCode) {
-        List<Instant> applications = couponApplications.get(couponCode);
-        // need to know if coupon exists and is not used yet or if coupon does not exist
-        if (Objects.isNull(applications)) {
-            if (this.findById(couponCode).isPresent()) {
+        if (this.findById(couponCode).isPresent()) {
+            List<Instant> applications = couponApplications.get(couponCode);
+            // need to know if coupon exists and is not used yet or if coupon does not exist
+            if (Objects.isNull(applications)) {
                 return Optional.of(new CouponApplications(couponCode, Collections.emptyList()));
             } else {
-                return Optional.empty();
+                return Optional.of(new CouponApplications(couponCode, applications));
             }
         }
-        return Optional.of(new CouponApplications(couponCode, applications));
+        return Optional.empty();
     }
 }
