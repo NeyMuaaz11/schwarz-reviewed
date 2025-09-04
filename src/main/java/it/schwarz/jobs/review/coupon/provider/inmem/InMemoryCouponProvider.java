@@ -48,7 +48,7 @@ public class InMemoryCouponProvider implements CouponProvider {
 
     @Override
     public List<Coupon> findAll() {
-        return coupons.stream().toList();
+        return coupons.stream().map(c -> new Coupon(c.getCode(), c.getDiscount(), c.getMinBasketValue(), c.getDescription(), couponApplications.computeIfAbsent(c.getCode(), a -> Collections.emptyList()).size())).toList();
     }
 
     @Override
