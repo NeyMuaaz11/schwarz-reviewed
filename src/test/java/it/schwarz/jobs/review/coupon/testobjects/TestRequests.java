@@ -1,8 +1,8 @@
 package it.schwarz.jobs.review.coupon.testobjects;
 
-import it.schwarz.jobs.review.coupon.api.dto.ApplyCouponRequestDto;
-import it.schwarz.jobs.review.coupon.api.dto.BasketDto;
-import it.schwarz.jobs.review.coupon.api.dto.CreateCouponRequestDto;
+import it.schwarz.jobs.review.coupon.api.dto.applycoupon.ApplyCouponRequestDto;
+import it.schwarz.jobs.review.coupon.api.dto.applycoupon.BasketDto;
+import it.schwarz.jobs.review.coupon.api.dto.createcoupon.CreateCouponRequestDto;
 
 import java.math.BigDecimal;
 

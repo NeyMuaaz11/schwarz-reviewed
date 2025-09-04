@@ -1,8 +1,8 @@
 package it.schwarz.jobs.review.coupon.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import it.schwarz.jobs.review.coupon.api.dto.CreateCouponRequestDto;
-import it.schwarz.jobs.review.coupon.domain.usecase.CouponUseCases;
+import it.schwarz.jobs.review.coupon.api.dto.createcoupon.CreateCouponRequestDto;
+import it.schwarz.jobs.review.coupon.service.CouponService;
 import it.schwarz.jobs.review.coupon.testobjects.TestObjects;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +33,12 @@ class CouponRestControllerTests {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private CouponUseCases couponUseCases;
+    private CouponService couponService;
 
 
     @Test
     void testGetCoupons() throws Exception {
-        when(couponUseCases.findAllCoupons()).thenReturn(new ArrayList<>());
+        when(couponService.findAllCoupons()).thenReturn(new ArrayList<>());
 
         this.mockMvc
                 .perform(get("/api/coupons"))
@@ -51,7 +51,7 @@ class CouponRestControllerTests {
     void testCreateValidCoupon() throws Exception {
 
         CreateCouponRequestDto request = TestObjects.requests().validCoupon();
-        when(couponUseCases.createCoupon(any())).thenReturn(TestObjects.coupons().COUPON_12_20());
+        when(couponService.createCoupon(any())).thenReturn(TestObjects.coupons().COUPON_12_20());
 
         this.mockMvc
                 .perform(post("/api/coupons")

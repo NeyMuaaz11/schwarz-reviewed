@@ -1,4 +1,4 @@
-package it.schwarz.jobs.review.coupon.domain.entity;
+package it.schwarz.jobs.review.coupon.domain;
 
 public class ApplicationResult {
     private final Basket basket;

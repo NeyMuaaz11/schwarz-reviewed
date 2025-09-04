@@ -1,17 +1,21 @@
-package it.schwarz.jobs.review.coupon.domain.usecase;
+package it.schwarz.jobs.review.coupon.service;
 
-import it.schwarz.jobs.review.coupon.domain.entity.ApplicationResult;
-import it.schwarz.jobs.review.coupon.domain.entity.Basket;
-import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
-import it.schwarz.jobs.review.coupon.domain.entity.CouponApplications;
+import it.schwarz.jobs.review.coupon.domain.ApplicationResult;
+import it.schwarz.jobs.review.coupon.domain.Basket;
+import it.schwarz.jobs.review.coupon.domain.Coupon;
+import it.schwarz.jobs.review.coupon.domain.CouponApplications;
+import it.schwarz.jobs.review.coupon.api.exceptions.BasketValueTooLowException;
+import it.schwarz.jobs.review.coupon.api.exceptions.CouponAlreadyExistsException;
+import it.schwarz.jobs.review.coupon.api.exceptions.CouponCodeNotFoundException;
+import it.schwarz.jobs.review.coupon.provider.CouponProvider;
 
 import java.util.List;
 
-public class CouponUseCases {
+public class CouponService {
 
     private final CouponProvider couponProvider;
 
-    public CouponUseCases(CouponProvider couponProvider) {
+    public CouponService(CouponProvider couponProvider) {
         this.couponProvider = couponProvider;
     }
 

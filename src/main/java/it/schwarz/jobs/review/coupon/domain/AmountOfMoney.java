@@ -1,4 +1,4 @@
-package it.schwarz.jobs.review.coupon.domain.entity;
+package it.schwarz.jobs.review.coupon.domain;
 
 import java.math.BigDecimal;
 

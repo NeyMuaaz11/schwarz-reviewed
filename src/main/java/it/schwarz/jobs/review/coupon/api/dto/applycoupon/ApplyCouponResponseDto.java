@@ -1,6 +1,6 @@
-package it.schwarz.jobs.review.coupon.api.dto;
+package it.schwarz.jobs.review.coupon.api.dto.applycoupon;
 
-import it.schwarz.jobs.review.coupon.domain.entity.ApplicationResult;
+import it.schwarz.jobs.review.coupon.domain.ApplicationResult;
 
 import java.math.BigDecimal;
 

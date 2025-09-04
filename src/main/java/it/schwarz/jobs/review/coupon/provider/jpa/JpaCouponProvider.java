@@ -1,9 +1,13 @@
 package it.schwarz.jobs.review.coupon.provider.jpa;
 
-import it.schwarz.jobs.review.coupon.domain.entity.AmountOfMoney;
-import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
-import it.schwarz.jobs.review.coupon.domain.entity.CouponApplications;
-import it.schwarz.jobs.review.coupon.domain.usecase.CouponProvider;
+import it.schwarz.jobs.review.coupon.domain.AmountOfMoney;
+import it.schwarz.jobs.review.coupon.domain.Coupon;
+import it.schwarz.jobs.review.coupon.domain.CouponApplications;
+import it.schwarz.jobs.review.coupon.provider.CouponProvider;
+import it.schwarz.jobs.review.coupon.entity.ApplicationJpaEntity;
+import it.schwarz.jobs.review.coupon.entity.CouponJpaEntity;
+import it.schwarz.jobs.review.coupon.repository.ApplicationJpaRepository;
+import it.schwarz.jobs.review.coupon.repository.CouponJpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
