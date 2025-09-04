@@ -15,7 +15,7 @@ import java.util.*;
 public class InMemoryCouponProvider implements CouponProvider {
 
     private final Set<Coupon> coupons = new HashSet<>();
-    private final Set<CouponApplications> couponApplications = new HashSet<>();
+    private final Map<String, List<Instant>> couponApplications = new HashMap<>();
 
     public InMemoryCouponProvider() {
         // Test Coupons
@@ -30,9 +30,7 @@ public class InMemoryCouponProvider implements CouponProvider {
         applicationDateTimes.add(Instant.now().plusSeconds(2));
         applicationDateTimes.add(Instant.now().plusSeconds(3));
         applicationDateTimes.add(Instant.now().plusSeconds(4));
-        couponApplications.add(
-                new CouponApplications("TEST_05_50", applicationDateTimes)
-        );
+        couponApplications.put("TEST_05_50", applicationDateTimes);
     }
 
 
@@ -62,20 +60,20 @@ public class InMemoryCouponProvider implements CouponProvider {
 
     @Override
     public void registerCouponApplication(String couponCode) {
-        // Intentionally left blank, because it is currently not used
+        couponApplications.computeIfAbsent(couponCode, a -> new ArrayList<>()).add(Instant.now());
     }
 
     @Override
     public Optional<CouponApplications> getCouponApplications(String couponCode) {
-        Optional<CouponApplications> applications = couponApplications.stream()
-                .filter(it -> it.getCouponCode().equals(couponCode))
-                .findFirst();
+        List<Instant> applications = couponApplications.get(couponCode);
         // need to know if coupon exists and is not used yet or if coupon does not exist
-        if (applications.isEmpty()) {
+        if (Objects.isNull(applications)) {
             if (this.findById(couponCode).isPresent()) {
                 return Optional.of(new CouponApplications(couponCode, Collections.emptyList()));
+            } else {
+                return Optional.empty();
             }
         }
-        return applications;
+        return Optional.of(new CouponApplications(couponCode, applications));
     }
 }
