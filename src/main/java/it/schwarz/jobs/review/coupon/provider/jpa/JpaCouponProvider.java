@@ -1,13 +1,18 @@
 package it.schwarz.jobs.review.coupon.provider.jpa;
 
-import it.schwarz.jobs.review.coupon.domain.entity.AmountOfMoney;
-import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
-import it.schwarz.jobs.review.coupon.domain.entity.CouponApplications;
-import it.schwarz.jobs.review.coupon.domain.usecase.CouponProvider;
+import it.schwarz.jobs.review.coupon.domain.AmountOfMoney;
+import it.schwarz.jobs.review.coupon.domain.Coupon;
+import it.schwarz.jobs.review.coupon.domain.CouponApplications;
+import it.schwarz.jobs.review.coupon.provider.CouponProvider;
+import it.schwarz.jobs.review.coupon.entity.ApplicationJpaEntity;
+import it.schwarz.jobs.review.coupon.entity.CouponJpaEntity;
+import it.schwarz.jobs.review.coupon.repository.ApplicationJpaRepository;
+import it.schwarz.jobs.review.coupon.repository.CouponJpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class JpaCouponProvider implements CouponProvider {
@@ -53,12 +58,14 @@ public class JpaCouponProvider implements CouponProvider {
 
     @Override
     public Optional<CouponApplications> getCouponApplications(String couponCode) {
-        var found = couponJpaRepository.findById(couponCode);
-        return found.map(couponJpaEntity -> new CouponApplications(
-                couponJpaEntity.getCode(),
-                couponJpaEntity.getApplications().stream()
-                        .map(ApplicationJpaEntity::getTimestamp)
-                        .toList()));
+        List<Instant> couponApplicationTimestamps = applicationRepository.findTimestampsByCouponCode(couponCode);
+        if (couponApplicationTimestamps.isEmpty()) {
+            // need to know if coupon exists and is not used yet or if coupon does not exist
+            if (!couponJpaRepository.existsById(couponCode)) {
+                return Optional.empty();
+            }
+        }
+        return Optional.of(new CouponApplications(couponCode, couponApplicationTimestamps));
     }
 
     private CouponJpaEntity domainToJpa(Coupon coupon) {
@@ -77,7 +84,7 @@ public class JpaCouponProvider implements CouponProvider {
                 AmountOfMoney.of(couponJpaEntity.getDiscount()),
                 AmountOfMoney.of(couponJpaEntity.getMinBasketValue()),
                 couponJpaEntity.getDescription(),
-                couponJpaEntity.getApplications() == null ? 0 : couponJpaEntity.getApplications().size()
+                Objects.isNull(couponJpaEntity.getApplications()) ? 0 : couponJpaEntity.getApplications().size()
         );
     }
 

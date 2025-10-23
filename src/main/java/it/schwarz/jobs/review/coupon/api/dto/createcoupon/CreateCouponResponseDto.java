@@ -1,6 +1,7 @@
-package it.schwarz.jobs.review.coupon.api.dto;
+package it.schwarz.jobs.review.coupon.api.dto.createcoupon;
 
-import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
+import it.schwarz.jobs.review.coupon.api.dto.CouponDto;
+import it.schwarz.jobs.review.coupon.domain.Coupon;
 
 public record CreateCouponResponseDto(CouponDto coupon) {
 

@@ -2,6 +2,11 @@ package it.schwarz.jobs.review.coupon;
 
 import it.schwarz.jobs.review.coupon.api.*;
 import it.schwarz.jobs.review.coupon.api.dto.*;
+import it.schwarz.jobs.review.coupon.api.dto.applycoupon.ApplyCouponRequestDto;
+import it.schwarz.jobs.review.coupon.api.dto.applycoupon.ApplyCouponResponseDto;
+import it.schwarz.jobs.review.coupon.api.dto.applycoupon.GetCouponApplicationsResponseDto;
+import it.schwarz.jobs.review.coupon.api.dto.createcoupon.CreateCouponRequestDto;
+import it.schwarz.jobs.review.coupon.api.dto.createcoupon.CreateCouponResponseDto;
 import it.schwarz.jobs.review.coupon.testobjects.TestObjects;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

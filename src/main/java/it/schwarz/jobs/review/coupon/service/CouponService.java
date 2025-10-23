@@ -1,17 +1,23 @@
-package it.schwarz.jobs.review.coupon.domain.usecase;
+package it.schwarz.jobs.review.coupon.service;
 
-import it.schwarz.jobs.review.coupon.domain.entity.ApplicationResult;
-import it.schwarz.jobs.review.coupon.domain.entity.Basket;
-import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
-import it.schwarz.jobs.review.coupon.domain.entity.CouponApplications;
+import it.schwarz.jobs.review.coupon.domain.ApplicationResult;
+import it.schwarz.jobs.review.coupon.domain.Basket;
+import it.schwarz.jobs.review.coupon.domain.Coupon;
+import it.schwarz.jobs.review.coupon.domain.CouponApplications;
+import it.schwarz.jobs.review.coupon.api.exceptions.BasketValueTooLowException;
+import it.schwarz.jobs.review.coupon.api.exceptions.CouponAlreadyExistsException;
+import it.schwarz.jobs.review.coupon.api.exceptions.CouponCodeNotFoundException;
+import it.schwarz.jobs.review.coupon.provider.CouponProvider;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-public class CouponUseCases {
+@Service
+public class CouponService {
 
     private final CouponProvider couponProvider;
 
-    public CouponUseCases(CouponProvider couponProvider) {
+    public CouponService(CouponProvider couponProvider) {
         this.couponProvider = couponProvider;
     }
 
@@ -28,11 +34,7 @@ public class CouponUseCases {
     }
 
     public CouponApplications getApplications(String couponCode) {
-        var foundCouponApplications = couponProvider.getCouponApplications(couponCode);
-        if (foundCouponApplications.isEmpty()) {
-            throw new CouponCodeNotFoundException("Coupon-Code " + couponCode + " not found.");
-        }
-        return foundCouponApplications.get();
+        return couponProvider.getCouponApplications(couponCode).orElseThrow(() -> new CouponCodeNotFoundException("Coupon code not found: " + couponCode));
     }
 
     public ApplicationResult applyCoupon(Basket basket, String couponCode) {

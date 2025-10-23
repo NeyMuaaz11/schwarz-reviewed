@@ -1,8 +1,8 @@
 package it.schwarz.jobs.review.coupon.testobjects;
 
-import it.schwarz.jobs.review.coupon.api.dto.ApplyCouponRequestDto;
-import it.schwarz.jobs.review.coupon.api.dto.BasketDto;
-import it.schwarz.jobs.review.coupon.api.dto.CreateCouponRequestDto;
+import it.schwarz.jobs.review.coupon.api.dto.applycoupon.ApplyCouponRequestDto;
+import it.schwarz.jobs.review.coupon.api.dto.applycoupon.BasketDto;
+import it.schwarz.jobs.review.coupon.api.dto.createcoupon.CreateCouponRequestDto;
 
 import java.math.BigDecimal;
 
@@ -22,5 +22,9 @@ public class TestRequests {
 
     public ApplyCouponRequestDto invalidApplicationOfNotExistingCode() {
         return new ApplyCouponRequestDto(new BasketDto(new BigDecimal("60.00")), "<NOT-EXISTING-CODE>");
+    }
+
+    public ApplyCouponRequestDto invalidApplicationOfEmptyCode() {
+        return new ApplyCouponRequestDto(new BasketDto(new BigDecimal("60.00")), "");
     }
 }

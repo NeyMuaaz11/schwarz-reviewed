@@ -1,9 +1,9 @@
 package it.schwarz.jobs.review.coupon.provider.inmem;
 
-import it.schwarz.jobs.review.coupon.domain.entity.AmountOfMoney;
-import it.schwarz.jobs.review.coupon.domain.entity.Coupon;
-import it.schwarz.jobs.review.coupon.domain.entity.CouponApplications;
-import it.schwarz.jobs.review.coupon.domain.usecase.CouponProvider;
+import it.schwarz.jobs.review.coupon.domain.AmountOfMoney;
+import it.schwarz.jobs.review.coupon.domain.Coupon;
+import it.schwarz.jobs.review.coupon.domain.CouponApplications;
+import it.schwarz.jobs.review.coupon.provider.CouponProvider;
 
 import java.time.Instant;
 import java.util.*;
@@ -15,7 +15,7 @@ import java.util.*;
 public class InMemoryCouponProvider implements CouponProvider {
 
     private final Set<Coupon> coupons = new HashSet<>();
-    private final Set<CouponApplications> couponApplications = new HashSet<>();
+    private final Map<String, List<Instant>> couponApplications = new HashMap<>();
 
     public InMemoryCouponProvider() {
         // Test Coupons
@@ -30,9 +30,8 @@ public class InMemoryCouponProvider implements CouponProvider {
         applicationDateTimes.add(Instant.now().plusSeconds(2));
         applicationDateTimes.add(Instant.now().plusSeconds(3));
         applicationDateTimes.add(Instant.now().plusSeconds(4));
-        couponApplications.add(
-                new CouponApplications("TEST_05_50", applicationDateTimes)
-        );
+        couponApplications.put("TEST_05_50", applicationDateTimes);
+        couponApplications.put("test", applicationDateTimes);
     }
 
 
@@ -50,7 +49,7 @@ public class InMemoryCouponProvider implements CouponProvider {
 
     @Override
     public List<Coupon> findAll() {
-        return coupons.stream().toList();
+        return coupons.stream().map(c -> new Coupon(c.getCode(), c.getDiscount(), c.getMinBasketValue(), c.getDescription(), couponApplications.computeIfAbsent(c.getCode(), a -> Collections.emptyList()).size())).toList();
     }
 
     @Override
@@ -62,13 +61,20 @@ public class InMemoryCouponProvider implements CouponProvider {
 
     @Override
     public void registerCouponApplication(String couponCode) {
-        // Intentionally left blank, because it is currently not used
+        couponApplications.computeIfAbsent(couponCode, a -> new ArrayList<>()).add(Instant.now());
     }
 
     @Override
     public Optional<CouponApplications> getCouponApplications(String couponCode) {
-        return couponApplications.stream()
-                .filter(it -> it.getCouponCode().equals(couponCode))
-                .findFirst();
+        if (this.findById(couponCode).isPresent()) {
+            List<Instant> applications = couponApplications.get(couponCode);
+            // need to know if coupon exists and is not used yet or if coupon does not exist
+            if (Objects.isNull(applications)) {
+                return Optional.of(new CouponApplications(couponCode, Collections.emptyList()));
+            } else {
+                return Optional.of(new CouponApplications(couponCode, applications));
+            }
+        }
+        return Optional.empty();
     }
 }

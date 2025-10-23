@@ -1,7 +1,12 @@
-package it.schwarz.jobs.review.coupon.api;
+package it.schwarz.jobs.review.coupon.api.controller;
 
 import it.schwarz.jobs.review.coupon.api.dto.*;
-import it.schwarz.jobs.review.coupon.domain.usecase.CouponUseCases;
+import it.schwarz.jobs.review.coupon.api.dto.applycoupon.ApplyCouponRequestDto;
+import it.schwarz.jobs.review.coupon.api.dto.applycoupon.ApplyCouponResponseDto;
+import it.schwarz.jobs.review.coupon.api.dto.applycoupon.GetCouponApplicationsResponseDto;
+import it.schwarz.jobs.review.coupon.api.dto.createcoupon.CreateCouponRequestDto;
+import it.schwarz.jobs.review.coupon.api.dto.createcoupon.CreateCouponResponseDto;
+import it.schwarz.jobs.review.coupon.service.CouponService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,17 +16,17 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/api/coupons")
 public class CouponRestController {
 
-    private final CouponUseCases couponUseCases;
+    private final CouponService couponService;
 
 
-    public CouponRestController(CouponUseCases couponUseCases) {
-        this.couponUseCases = couponUseCases;
+    public CouponRestController(CouponService couponService) {
+        this.couponService = couponService;
     }
 
 
     @GetMapping()
     public ResponseEntity<GetCouponsResponseDto> getCoupons() {
-        var coupons = couponUseCases.findAllCoupons();
+        var coupons = couponService.findAllCoupons();
 
         // Map from Domain to API
         var response = GetCouponsResponseDto.of(coupons);
@@ -36,7 +41,7 @@ public class CouponRestController {
         // Map from API to Domain
         var coupon = request.toCoupon();
 
-        var couponCreated = couponUseCases.createCoupon(coupon);
+        var couponCreated = couponService.createCoupon(coupon);
 
         // Map from Domain to API and return
         var response = CreateCouponResponseDto.of(couponCreated);
@@ -45,7 +50,7 @@ public class CouponRestController {
 
     @GetMapping("/{couponCode}/applications")
     public ResponseEntity<GetCouponApplicationsResponseDto> getCouponApplications(@PathVariable("couponCode") String couponCode) {
-        var couponApplications = couponUseCases.getApplications(couponCode);
+        var couponApplications = couponService.getApplications(couponCode);
 
         // Map from Domain to API
         var response = GetCouponApplicationsResponseDto.of(couponApplications);
@@ -61,7 +66,7 @@ public class CouponRestController {
         var basket = request.basket().toBasket();
         var couponCode = request.couponCode();
 
-        var applicationResult = couponUseCases.applyCoupon(basket, couponCode);
+        var applicationResult = couponService.applyCoupon(basket, couponCode);
 
         // Map from Domain to API and return
         var response = ApplyCouponResponseDto.of(applicationResult);
